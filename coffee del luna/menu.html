@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Icon Font Link Fontawase -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous"/>
+
+    <!-- Link file Css custom -->
+    <link rel="stylesheet" href="style.css">
+
+
+    <title>Coffee Del Luna</title>
+    <style>
+                /* Cấu hình cho thẻ div chứa ảnh */
+        .img-banner {
+            width: 100%; /* Chiếm toàn bộ chiều rộng của phần tử cha */
+            height: 400px; /* Chiều cao cố định cho banner */
+            position: relative; /* Để các phần tử con (ảnh) có thể được căn chỉnh tuyệt đối */
+            overflow: hidden; /* Ẩn phần ảnh nếu nó vượt quá chiều cao hoặc chiều rộng */
+            background-color: #333; /* Màu nền của div (có thể là màu tối để làm nổi bật ảnh) */
+            display: flex; /* Dùng flexbox để căn giữa ảnh */
+            justify-content: center; /* Căn giữa ảnh theo chiều ngang */
+            align-items: center; /* Căn giữa ảnh theo chiều dọc */
+            box-sizing: border-box; /* Đảm bảo padding và border không làm thay đổi kích thước tổng thể */
+            z-index: 999;
+        }
+
+        /* Cấu hình cho ảnh */
+        .banner {
+            width: 100%; /* Ảnh chiếm toàn bộ chiều rộng của div */
+            height: 100%; /* Ảnh chiếm toàn bộ chiều cao của div */
+            object-fit: cover; /* Đảm bảo ảnh phủ hết div mà không làm méo */
+            object-position: center; /* Căn giữa ảnh trong div */
+            transition: transform 0.3s ease, opacity 0.3s ease; /* Thêm hiệu ứng mượt mà khi hover */
+           
+        }
+
+        
+
+        /* Responsive cho banner ảnh */
+        @media screen and (max-width: 768px) {
+            .img-banner {
+                height: 300px; /* Giảm chiều cao của banner khi màn hình nhỏ */
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .img-banner {
+                height: 250px; /* Giảm chiều cao của banner trên màn hình rất nhỏ */
+            }
+        }
+        
+        .main-container {
+            display: flex; /* Dùng flexbox để căn chỉnh các phần tử con theo chiều ngang */
+            align-items: center; /* Căn giữa các phần tử con theo chiều dọc */
+            justify-content: center; /* Căn giữa các phần tử con theo chiều ngang */
+            flex-wrap: wrap; /* Cho phép các phần tử con xuống dòng khi không đủ không gian */
+            width: 100%; /* Chiếm toàn bộ chiều rộng của phần tử cha */
+            gap: 1px; /* Khoảng cách giữa các phần tử .thumbex */
+            box-sizing: border-box; /* Tính toán padding và border trong tổng chiều rộng */
+            margin: 0 auto; /* Căn giữa container theo chiều ngang */
+        }
+
+        /* Cấu hình cho phần tử wrapper chứa các thumbnail */
+        .thumbex-wrapper {
+            display: flex; /* Dùng flexbox để căn chỉnh các phần tử con theo chiều ngang */
+            flex-wrap: wrap; /* Cho phép các phần tử con xuống dòng nếu không đủ chỗ */
+            gap: 20px; /* Khoảng cách giữa các thumbnail */
+            justify-content: center; /* Căn giữa các thumbnail theo chiều ngang */
+            padding: 20px; /* Padding bên trong .thumbex-wrapper */
+            width: 100%; /* Chiếm toàn bộ chiều rộng của phần tử cha */
+            box-sizing: border-box; /* Tính toán padding và border trong tổng chiều rộng */
+            overflow-x: auto; /* Cho phép cuộn ngang nếu các phần tử con quá dài */
+        }
+
+        /* Cấu hình cho mỗi phần tử thumbnail */
+        .thumbex {
+            width: 250px; /* Chiều rộng của mỗi thumbnail */
+            height: 300px; /* Chiều cao của mỗi thumbnail */
+            flex: 0 0 auto; /* Các phần tử .thumbex không thay đổi kích thước (không co giãn) */
+            overflow: hidden; /* Ẩn bất kỳ nội dung nào vượt ngoài kích thước thumbnail */
+            outline: 2px solid white; /* Đặt viền trắng quanh thumbnail */
+            outline-offset: -15px; /* Lùi viền vào trong */
+            background-color: rgb(205, 179, 139); /* Màu nền của thumbnail */
+            box-shadow: 5px 10px 40px 5px #00000080; /* Thêm hiệu ứng đổ bóng cho thumbnail */
+            border-radius: 10px; /* Bo góc để thumbnail mềm mại */
+            transition: transform 0.3s ease-out; /* Hiệu ứng chuyển động khi hover */
+        }
+
+        /* Cấu hình cho phần tử ảnh trong thumbnail */
+        .thumbnail {
+            overflow: hidden; /* Ẩn phần ảnh vượt ra ngoài thumbnail */
+            width: 100%; /* Chiếm toàn bộ chiều rộng của .thumbex */
+            height: 300px; /* Chiều cao của thumbnail */
+            position: relative; /* Để các phần tử con có thể sử dụng `position: absolute` */
+            opacity: 0.8; /* Đặt độ mờ cho thumbnail */
+            transition: transform 0.4s ease-out, opacity 0.4s ease-out; /* Hiệu ứng chuyển động và độ mờ khi hover */
+            border-radius: 10px; /* Bo góc của thumbnail */
+        }
+
+        /* Cấu hình cho ảnh trong thumbnail */
+        img {
+            position: absolute; /* Đặt ảnh tuyệt đối trong thumbnail */
+            z-index: 1; /* Đặt ảnh dưới văn bản */
+            left: 50%; /* Căn giữa ảnh theo chiều ngang */
+            top: 50%; /* Căn giữa ảnh theo chiều dọc */
+            height: 115px; /* Chiều cao của ảnh */
+            width: auto; /* Để chiều rộng của ảnh tự động thay đổi theo tỷ lệ */
+            transform: translate(-50%, -50%); /* Đưa ảnh vào trung tâm của .thumbnail */
+            backface-visibility: hidden; /* Đảm bảo ảnh không bị xoay ngược khi quay */
+            transition: transform 0.4s ease-out; /* Hiệu ứng chuyển động khi hover */
+        }
+
+        /* Cấu hình cho chữ (span) trong thumbnail */
+        span {
+            position: absolute; /* Đặt văn bản tuyệt đối trên ảnh */
+            z-index: 2; /* Đặt văn bản lên trên ảnh */
+            top: calc(50% - 20px); /* Căn giữa văn bản theo chiều dọc, trừ đi 20px */
+            left: 0; /* Căn trái văn bản */
+            right: 0; /* Căn phải văn bản */
+            color: white; /* Màu chữ trắng */
+            font-size: 24px; /* Kích thước chữ */
+            font-weight: 300; /* Độ dày chữ */
+            font-family: 'Raleway', sans-serif; /* Font chữ */
+            padding: 10px; /* Khoảng cách xung quanh văn bản */
+            margin: 0 45px; /* Thêm khoảng cách từ hai bên */
+            text-align: center; /* Căn giữa văn bản */
+            letter-spacing: 0.2px; /* Khoảng cách giữa các ký tự */
+            transition: opacity 0.3s ease-out; /* Hiệu ứng mờ khi hover */
+        }
+
+        /* Hiệu ứng khi hover vào thumbnail */
+        .thumbnail:hover {
+            transform: scale(1.1); /* Phóng to thumbnail khi hover */
+            opacity: 1; /* Đặt độ mờ về 1 */
+        }
+
+        /* Ẩn văn bản (span) khi hover vào thumbnail */
+        .thumbnail:hover span {
+            opacity: 0; /* Làm mờ văn bản khi hover */
+        }
+
+        /* Hiệu ứng khi hover vào toàn bộ phần thumbnail */
+        .thumbex:hover {
+            transform: translateY(-10px); /* Di chuyển thumbnail lên trên một chút */
+        }
+
+        /* Cấu hình khi kích thước màn hình nhỏ hơn 1200px */
+        @media screen and (max-width: 1200px) {
+            .thumbex-wrapper {
+                overflow-x: auto; /* Cho phép cuộn ngang */
+                scrollbar-width: thin; /* Đặt scrollbar mỏng */
+                -webkit-overflow-scrolling: touch; /* Cho phép cuộn mượt mà trên thiết bị cảm ứng */
+            }
+
+            /* Tùy chỉnh kiểu cho scrollbar trên trình duyệt Webkit */
+            .thumbex-wrapper::-webkit-scrollbar {
+                height: 8px; /* Đặt chiều cao của scrollbar */
+            }
+
+            .thumbex-wrapper::-webkit-scrollbar-track {
+                background: #f1f1f1; /* Màu nền của track scrollbar */
+            }
+
+            .thumbex-wrapper::-webkit-scrollbar-thumb {
+                background: #888; /* Màu của thanh cuộn (thumb) */
+                border-radius: 4px; /* Bo góc của thanh cuộn */
+            }
+
+            .thumbex {
+                width: 200px; /* Giảm kích thước thumbnail khi màn hình nhỏ */
+                height: 250px; /* Giảm chiều cao thumbnail */
+            }
+        }
+
+        /* Cấu hình khi kích thước màn hình nhỏ hơn 768px */
+        @media screen and (max-width: 768px) {
+            .thumbex-wrapper {
+                gap: 15px; /* Giảm khoảng cách giữa các thumbnail */
+            }
+
+            .thumbex {
+                width: 180px; /* Giảm kích thước thumbnail cho màn hình nhỏ */
+                height: 220px; /* Giảm chiều cao thumbnail */
+            }
+        }
+
+        /* Cấu hình khi kích thước màn hình nhỏ hơn 480px */
+        @media screen and (max-width: 480px) {
+            .thumbex-wrapper {
+                flex-direction: column; /* Chuyển thành dạng cột khi màn hình quá nhỏ */
+                align-items: center; /* Căn giữa các thumbnail theo chiều ngang */
+            }
+
+            .thumbex {
+                width: 90%; /* Chiếm 90% chiều rộng của màn hình nhỏ */
+                height: 200px; /* Giảm chiều cao của thumbnail */
+            }
+        }
+            footer {
+            background: #c97035be; /* Màu nền */
+            padding: 20px; /* Khoảng cách bên trong */
+            text-align: center; /* Căn giữa nội dung */
+    
+        }
+
+        .footer-content {
+            display: flex; /* Sử dụng flexbox để sắp xếp các phần */
+            justify-content: space-around; /* Căn giữa các phần */
+            flex-wrap: wrap; /* Cho phép các phần xuống dòng nếu không đủ chỗ */
+        }
+
+        .footer-section {
+            flex: 1; /* Mỗi phần chiếm 1 không gian bằng nhau */
+            min-width: 200px; /* Đặt chiều rộng tối thiểu cho mỗi phần */
+            margin: 10px; /* Khoảng cách giữa các phần */
+        }
+
+        .footer-section h4 {
+            margin-bottom: 10px; /* Khoảng cách dưới tiêu đề */
+        }
+
+        .footer-section p, .footer-section ul {
+            margin: 0; /* Bỏ khoảng cách mặc định */
+            padding: 0; /* Bỏ padding mặc định */
+        }
+
+        .footer-section ul {
+            list-style-type: none; /* Bỏ dấu chấm đầu dòng */
+            padding: 0; /* Bỏ padding */
+        }
+
+        .footer-section ul li {
+            margin: 5px 0; /* Khoảng cách giữa các mục trong danh sách */
+        }
+
+        .footer-section a {
+            text-decoration: none; /* Bỏ gạch chân */
+            color: #007bff; /* Màu chữ cho liên kết */
+        }
+
+        .footer-section a:hover {
+            text-decoration: underline; /* Gạch chân khi hover */
+        }
+
+        .footer-bottom {
+            margin-top: 20px; /* Khoảng cách trên */
+            font-size: 14px; /* Kích thước chữ nhỏ hơn */
+            color: #6c757d; /* Màu chữ nhạt hơn */
+        }           
+
+    </style>
+
+
+</head>
+<body>
+    
+    <!-- Header section starts -->
+
+    <header class="header">
+
+        <a href="Coffee del luna.html" class="logo">
+            <i class="fas fa-mug-hot">COFFEE</i>
+        </a>
+
+        <nav class="navbar">
+            <a href="Coffee del luna.html">Home</a>
+            <a href="Coffee del luna.html">Giới thiệu</a>
+            <a href="menu.html">Menu</a>
+            <a href="CÀ PHÊ.html">CÀ phê</a>
+            <a href="BÁNH NGỌT.HTML">Bánh ngọt</a>
+            <a href="SODA.HTML">Soda</a>
+            <a href="LIÊN HỆ.HTML">LIÊN HỆ</a>
+        </nav>
+
+        <div class="icons">
+            <div class="fas fa-search" id="search-btn"></div>
+            <div class="fas fa-shopping-cart" id="cart-btn"></div>
+            <div class="fas fa-bars" id="menu-btn"></div>
+        </div>
+
+        <div class="search-from">
+            <input type="search" id="search-box" placeholder="search here ......">
+            <label for="search-box" class="fas fa-search"></label>
+        </div>
+
+        
+        <a title="Đăng nhập" class="login-button" href="Đăng nhập.html">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"></path>
+            </svg>
+        </a>
+    </header>
+    <div class="img-banner">
+        <img class="banner" src="img/banner 1.jpg">
+    </div>
+        <div>
+            <div class="main-container">
+                <div class="thumbex">
+                    <div class="thumbnail">
+                        <img src="img/cà-phê-latte.jpg">
+                        <span>Cà phê latte</span>
+                    </div>
+                </div>
+                <div class="thumbex">
+                    <div class="thumbnail">
+                        <img src="img/CÀ PHÊ SỮA ĐÁ.webp">
+                        <span>Cà phê sữa đá</span>
+                    </div>
+                </div>
+                <div class="thumbex">
+                    <div class="thumbnail">
+                        <img src="img/matcha latte.webp">
+                        <span>Matcha latte</span>
+                    </div>
+                </div>
+                <div class="thumbex">
+                    <div class="thumbnail">
+                        <img src="img/bạc xỉu.jpg">
+                        <span>Bạc xỉu</span>
+                    </div>
+                </div>
+                <div class="thumbex">
+                    <div class="thumbnail">
+                        <img src="img/màu-đá.jpg">
+                        <span>MÀu đá</span>
+                    </div>
+                </div>  
+                <div class="thumbex">
+                    <div class="thumbnail">
+                        <img src="img/espresso_cafe.jpg">
+                        <span>ESPRESSO</span>
+                    </div>
+                </div>  
+                <div class="thumbex">
+                    <div class="thumbnail">
+                        <img src="img/machiato_cafe.jpg">
+                        <span>MACHIATO</span>
+                    </div>
+                </div>  
+                <div class="thumbex">
+                    <div class="thumbnail">
+                        <img src="">
+                        <span></span>
+                    </div>
+                </div>
+                <div class="thumbex">
+                    <div class="thumbnail">
+                        <img src="">
+                        <span></span>
+                    </div>
+                </div> <div class="thumbex">
+                    <div class="thumbnail">
+                        <img src="">
+                        <span></span>
+                    </div>
+                </div> <div class="thumbex">
+                    <div class="thumbnail">
+                        <img src="">
+                        <span></span>
+                    </div>
+                </div> <div class="thumbex">
+                    <div class="thumbnail">
+                        <img src="">
+                        <span></span>
+                    </div>
+                </div> <div class="thumbex">
+                    <div class="thumbnail">
+                        <img src="">
+                        <span></span>
+                    </div>
+                </div> <div class="thumbex">
+                    <div class="thumbnail">
+                        <img src="">
+                        <span></span>
+                    </div>
+                </div> <div class="thumbex">
+                    <div class="thumbnail">
+                        <img src="">
+                        <span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+    
+    
+
+        <section class="flooter">>
+                <div class="footer-content">
+                    <div class="footer-section">
+                        <h4>Thông tin công ty</h4>
+                        <p>Công ty TNHH 3 Thành viên</p>
+                        <p>Địa chỉ: Kiến An Hải Phòng</p>
+                        <p>Điện thoại: 0813468978</p>
+                        <p>Email:dcmthangbaom</p>
+                    </div>
+                    <div class="footer-section">
+                        <h4>Liên kết nhanh</h4>
+                        <ul style="list-style-type: none; padding: 0;">
+                            <li><a href="Giới thiêu.html">Giới thiệu</a></li>
+                            <li><a href="menu.html">Sản phẩm</a></li>
+                            <li><a href="Liên hệ.html">Liên hệ</a></li>
+                            <li><a href="Coffee del luna.html">Chính sách bảo mật</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-section">
+                        <h4>Kết nối với chúng tôi</h4>
+                        <a href="https://web.facebook.com/profile.php?id=100074914901177"><img src="facebook-icon.png" alt="Facebook" style="width: 24px; height: 24px;">Facebook</a>
+                        <a href="https://www.instagram.com/dotruong.5?fbclid=IwY2xjawGiRx1leHRuA2FlbQIxMAABHQ4rfqHhkio8DzpL9osgZbvrnp2Sgc8I1oAUoKa1774Vj4jp72nZ6hgN3w_aem_FLl-c7pxDAacQvEv8DCABw"><img src="instagram-icon.png" alt="Instagram" style="width: 24px; height: 24px;">Instagram</a>
+                        <a href=""><img src="twitter-icon.png" alt="Twitter" style="width: 24px; height: 24px;"></a>
+                    </div>
+                </div>
+                
+                <div class="footer-bottom" style="margin-top: 20px;">
+                    <small>&copy; 2030 Công ty TNHH Huy gà. Bảo lưu mọi quyền.</small>
+                </div>
+
+            <div class="share">
+                <a href="#" class="fab fa-facebook-f"></a>
+                <a href="#" class="fab fa-twitter"></a>
+                <a href="#" class="fab fa-instagram"></a>
+                <a href="#" class="fab fa-linkedin"></a>
+                <a href="#" class="fab fa-pinterest"></a>
+            </div>
+
+            
+            
+
+        </section>
+
+   
+    <script src="JavaScript.js"></script>
+
+</body>
+</html>
